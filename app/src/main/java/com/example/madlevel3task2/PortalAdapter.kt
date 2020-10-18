@@ -6,7 +6,22 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_portal.view.*
 
-class ReminderAdapter(private val portals: List<Portal>) : RecyclerView.Adapter<ReminderAdapter.ViewHolder>(){
+class PortalAdapter(private val portals: List<Portal>) : RecyclerView.Adapter<PortalAdapter.ViewHolder>(){
+
+    var onItemClick: ((Portal) -> Unit)? = null
+
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        init {
+            itemView.setOnClickListener {
+                onItemClick?.invoke(portals[adapterPosition])
+            }
+        }
+
+        fun databind(portal: Portal) {
+            itemView.tvPortal.text = portal.portalText
+            itemView.tvUrl.text = portal.portalUrl
+        }
+    }
 
     /**
      * Creates and returns a ViewHolder object, inflating a standard layout called simple_list_item_1.
@@ -29,15 +44,5 @@ class ReminderAdapter(private val portals: List<Portal>) : RecyclerView.Adapter<
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.databind(portals[position])
-    }
-
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        //  val binding = ItemReminderBinding.bind(itemView)
-
-        fun databind(portal: Portal) {
-            itemView.tvPortal.text = portal.portalText
-            itemView.tvUrl.text = portal.portalUrl
-        }
     }
 }

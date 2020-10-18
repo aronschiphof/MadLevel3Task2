@@ -1,5 +1,6 @@
 package com.example.madlevel3task2
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,15 +8,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_portals.*
 
 private val portals = arrayListOf<Portal>()
-private val PortalAdapter = ReminderAdapter(portals)
+private val portalAdapter = PortalAdapter(portals)
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -38,10 +41,17 @@ class PortalsFragment : Fragment() {
     private fun initViews() {
         // Initialize the recycler view with a linear layout manager, adapter
         rvPortals.layoutManager =
-            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        rvPortals.adapter = PortalAdapter
+            StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+        rvPortals.adapter = portalAdapter
         rvPortals.addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
         observeAddPortalResult()
+
+        portalAdapter.onItemClick = {
+                portal ->
+            val builder = CustomTabsIntent.Builder()
+            val customTabsIntent = builder.build()
+            customTabsIntent.launchUrl(requireActivity(), Uri.parse(portal.portalUrl))
+        }
     }
 
     private fun observeAddPortalResult() {
@@ -58,7 +68,7 @@ class PortalsFragment : Fragment() {
 
             val portal = Portal(name, url)
                 portals.add(portal)
-               PortalAdapter.notifyDataSetChanged()
+               portalAdapter.notifyDataSetChanged()
 
         }
     }
