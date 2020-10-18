@@ -45,13 +45,21 @@ class PortalsFragment : Fragment() {
     }
 
     private fun observeAddPortalResult() {
+        var name = ""
+        var url = ""
+
         setFragmentResultListener(REQ_PORTAL_KEY) { key, bundle ->
             bundle.getString(BUNDLE_PORTAL_KEY)?.let {
-                val portal = Portal(it)
+                name = it
+            } ?: Log.e("RemindersFragment", "Request triggered, but empty portal text!")
+            bundle.getString(BUNDLE_URL_KEY)?.let {
+                url = it
+            } ?: Log.e("RemindersFragment", "Request triggered, but empty portal text!")
 
+            val portal = Portal(name, url)
                 portals.add(portal)
                PortalAdapter.notifyDataSetChanged()
-            } ?: Log.e("PortalFragment", "Request triggered, but empty portal text!")
+
         }
     }
 

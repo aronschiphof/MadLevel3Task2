@@ -37,6 +37,7 @@ class ReminderAdapter(private val portals: List<Portal>) : RecyclerView.Adapter<
 
         fun databind(portal: Portal) {
             itemView.tvPortal.text = portal.portalText
+            itemView.tvUrl.text = portal.portalUrl
         }
     }
 }
