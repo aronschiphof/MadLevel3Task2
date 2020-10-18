@@ -16,4 +16,5 @@
     <string name="portal_url">Portal URL</string>
     <string name="not_valid_portal">Invalid portal</string>
     <string name="not_valid_url">Invalid URL</string>
+    <string name="prefill_url">https://</string>
 </resources>
